@@ -22,17 +22,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   # Patch Chrome launch script and append CHROMIUM_FLAGS to the last line:
   && sed -i '${s/$/'" $CHROMIUM_FLAGS"'/}' /opt/google/chrome/google-chrome \
   && CHROME_VERSION=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") \
-  && CHROMEDRIVER_VERSION=$(curl -sL "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_$CHROME_VERSION") \
+  && CHROMEDRIVER_VERSION=$(wget -qO- "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_$CHROME_VERSION") \
   && curl -sL https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip -o /tmp/driver.zip \
   && unzip /tmp/driver.zip \
-  && chmod 755 chromedriver \
-  && mv chromedriver /usr/local/bin/ \
+  && chmod 755 chromedriver-linux64/chromedriver \
+  && mv chromedriver-linux64/chromedriver /usr/local/bin/ \
   # Remove obsolete files:
   && apt-get autoremove --purge -y \
     unzip \
     gnupg \
   && apt-get clean \
   && rm -rf \
+    chromedriver-linux64 \
     /tmp/* \
     /usr/share/doc/* \
     /var/cache/* \
