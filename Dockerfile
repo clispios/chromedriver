@@ -1,8 +1,7 @@
 #
 # Chromedriver Dockerfile
 #
-
-FROM blueimp/basedriver
+FROM ghcr.io/clispios/basedriver:master
 
 # Install the latest versions of Google Chrome and Chromedriver:
 RUN export DEBIAN_FRONTEND=noninteractive \
