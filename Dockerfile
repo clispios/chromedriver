@@ -21,9 +21,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && CHROMIUM_FLAGS='--no-sandbox --disable-dev-shm-usage' \
   # Patch Chrome launch script and append CHROMIUM_FLAGS to the last line:
   && sed -i '${s/$/'" $CHROMIUM_FLAGS"'/}' /opt/google/chrome/google-chrome \
-  && BASE_URL=https://chromedriver.storage.googleapis.com \
-  && VERSION=$(curl -sL "$BASE_URL/LATEST_RELEASE") \
-  && curl -sL "$BASE_URL/$VERSION/chromedriver_linux64.zip" -o /tmp/driver.zip \
+  && CHROME_VERSION=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") \
+  && CHROMEDRIVER_VERSION=$(wget -qO- "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_$CHROME_VERSION")
+  && curl -sL https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip -o /tmp/driver.zip \
   && unzip /tmp/driver.zip \
   && chmod 755 chromedriver \
   && mv chromedriver /usr/local/bin/ \
